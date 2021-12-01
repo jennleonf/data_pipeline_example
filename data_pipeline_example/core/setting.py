@@ -28,17 +28,17 @@ class Settings:
                 "mysql": {
                     "host": "172.18.0.2",
                     "port": 3306,
-                    "user": "user",
+                    "user": "root",
                     "password": "password",
                     "database": "warehouse",
-                    "chunk_size": 2000,
-                    "commit_epochs": 1000,
+                    "chunk_size": 200,
+                    "commit_epochs": 100,
                 }
             }
         },
         "etl": {
             "json_loader": {
-                "table_name": "tacks",
+                "table_name": "tracks",
                 "file_name": "202106_flink_data_engieering_sample_data.json",
                 "schema": {
                     "type": "object",

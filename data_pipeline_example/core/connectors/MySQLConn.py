@@ -39,7 +39,8 @@ class MySqlConnection:
             count_elemnt = 0
 
             for i in range(len(chunks)):
-                one_slide = [(x[0].item(), x[1].item()) for x in chunks[i]]
+                # one_slide = [(x[0].item(), x[1].item()) for x in chunks[i]]
+                one_slide = chunks[i]
                 one_slide = [tuple(row) for row in one_slide]
                 count_elemnt += len(one_slide)
 
@@ -53,6 +54,19 @@ class MySqlConnection:
 
             logging.info(f"Data inserted! {count_commit} times")
             logging.info(f"Amount of items inserted! {count_elemnt}")
+
+        except Exception as e:
+            logging.info("Received error:", e)
+            self.client.rollback()
+            logging.info("db data rollbacked!")
+        cur.close()
+
+    def insert(self, stmt_insert, data):
+        cur = self.client.cursor()
+        try:
+
+            cur.executemany(stmt_insert, data)
+            self.client.commit()
 
         except Exception as e:
             logging.info("Received error:", e)
