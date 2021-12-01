@@ -10,11 +10,7 @@ from data_pipeline_example.core.setting import Settings
 from data_pipeline_example.core.connectors.MySQLConn import MySqlConnection
 from jsonschema import validate
 
-logging.basicConfig(filename='./execution log for the JSON Loader ETL',
-                    filemode='a',
-                    format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
-                    datefmt='%H:%M:%S',
-                    level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG)
 
 logging.debug('This will get logged')
 
@@ -25,8 +21,7 @@ class ETLJsonLoader:
 
     Attributes
     ----------
-     mysql_connector
-        This attribute is the instance for MySQL connector
+
     Methods
     -------
     read():
@@ -38,6 +33,8 @@ class ETLJsonLoader:
     run():
         Function in charge of sequentially performing the ETL
 
+    _get_data_to_insert():
+        Function is in charge of transforming the data for insertion
     Use
     ------
     json_loader = ETLJsonLoader()
@@ -70,22 +67,6 @@ class ETLJsonLoader:
             for key, value in self.data[i].items():
                 if key == 'data':
                     self.data[i][key] = json.dumps(value)
-
-    def simple_read_save(self):
-        with open(self.file_name, 'r') as f:
-            for line in f:
-                tmp_line = json.loads(line)
-                if self._validate(tmp_line):
-                    self.data.append(tmp_line)
-        logging.info(f'Amount of valid rows %s', len(self.data))
-        data_prueba = self.data.copy()
-        data_prueba = [tuple(data_prueba[i].items())
-                       for i in range(len(data_prueba))]
-        stmt_insert = (
-            f"INSERT INTO {self.table_name.lower()} (event_type, event_time, data, processing_date) VALUES (%s, %s, %s, %s)"
-        )
-        self.mysql_connector.insert(stmt_insert, data_prueba)
-        self.mysql_connector.close()
 
     def _validate(self, item):
         try:

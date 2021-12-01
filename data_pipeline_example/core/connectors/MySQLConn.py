@@ -39,7 +39,6 @@ class MySqlConnection:
             count_elemnt = 0
 
             for i in range(len(chunks)):
-                # one_slide = [(x[0].item(), x[1].item()) for x in chunks[i]]
                 one_slide = chunks[i]
                 one_slide = [tuple(row) for row in one_slide]
                 count_elemnt += len(one_slide)
