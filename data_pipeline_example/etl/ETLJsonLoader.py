@@ -9,7 +9,13 @@ from typing import Tuple
 from data_pipeline_example.core.setting import Settings
 from data_pipeline_example.core.connectors.MySQLConn import MySqlConnection
 from jsonschema import validate
-logging.basicConfig(level=logging.DEBUG)
+
+logging.basicConfig(filename='./execution log for the JSON Loader ETL',
+                    filemode='a',
+                    format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+                    datefmt='%H:%M:%S',
+                    level=logging.DEBUG)
+
 logging.debug('This will get logged')
 
 
